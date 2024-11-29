@@ -1,3 +1,9 @@
+"""
+CP1404 Practical 10 - Flask Demo
+Integrating Wikipedia API onto a Flask application
+Harrison O'Kane
+"""
+
 from flask import Flask, render_template, request, redirect, url_for, session
 import wikipediaapi
 
