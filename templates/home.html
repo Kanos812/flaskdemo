@@ -1,16 +1,6 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Home</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <h1>Welcome to the Wikipedia Search App</h1>
-    <nav>
-        <a href="{{ url_for('home') }}">Home</a> |
-        <a href="{{ url_for('about') }}">About</a> |
-        <a href="{{ url_for('search') }}">Search</a>
-    </nav>
-</body>
-</html>
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<h1>Welcome to the Wikipedia Search App</h1>
+<p>This is a simple application that allows you to search for Wikipedia pages and view their summaries.</p>
+{% endblock %}
