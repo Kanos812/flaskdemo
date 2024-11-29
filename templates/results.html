@@ -2,12 +2,12 @@
 {% block title %}Wikipedia Results{% endblock %}
 {% block content %}
 {% if page %}
-{#    TODO: add page title and more... #}
-
-  <h2>Summary </h2>
+    <h1>{{ page.title }}</h1>
+    <h2>Summary</h2>
     <p>{{ page.summary }}</p>
-    <p><a href="{{ page.url }}"> {{ page.title }}</a> </p>
+    <p><a href="{{ page.url }}">Read more on Wikipedia</a></p>
 {% else %}
-  <h1>Error</h1>
+    <h1>Error</h1>
+    <p>Page not found. Please try another search term.</p>
 {% endif %}
 {% endblock %}
