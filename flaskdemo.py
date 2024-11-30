@@ -21,10 +21,22 @@ def search():
     return render_template("search.html")
 
 @app.route('/results')
+@app.route('/results')
 def results():
-    search_term = session['search_term']
+    # Check if the user selected a disambiguation option
+    search_term = request.args.get('search')
+    if search_term:
+        session['search_term'] = search_term  # Update the session with the new term
+
+    # Get the term from the session (updated or original)
+    search_term = session.get('search_term')
+    if not search_term:
+        return render_template("results.html", page={"error": "no_results"})
+
+    # Fetch the page or disambiguation options
     page = get_page(search_term)
     return render_template("results.html", page=page)
+
 
 
 def get_page(search_term):

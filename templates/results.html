@@ -5,12 +5,18 @@
         <p>The term you searched for is ambiguous. Please select from the following options:</p>
         <ul>
             {% for option in page.options %}
-                <li><a href="/search?search={{ option }}">{{ option }}</a></li>
+                <li><a href="{{ url_for('results', search=option) }}">{{ option }}</a></li>
             {% endfor %}
         </ul>
+    {% elif page.error == "no_results" %}
+        <h1>No Results Found</h1>
+        <p>We couldn't find any pages matching your search term. Please try a different query.</p>
     {% elif page.error == "page_error" %}
         <h1>Error</h1>
         <p>Page not found. Please try another search term.</p>
+    {% elif page.error == "unexpected" %}
+        <h1>Error</h1>
+        <p>Something went wrong: {{ page.message }}</p>
     {% else %}
         <h1>{{ page.title }}</h1>
         <h2>Summary</h2>
@@ -19,6 +25,6 @@
     {% endif %}
 {% else %}
     <h1>Error</h1>
-    <p>No results found. Please try another search term.</p>
+    <p>Unknown issue. Please try again later.</p>
 {% endif %}
 {% endblock %}
