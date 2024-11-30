@@ -1,13 +1,24 @@
-{% extends "layout.html" %}
-{% block title %}Wikipedia Results{% endblock %}
 {% block content %}
 {% if page %}
-    <h1>{{ page.title }}</h1>
-    <h2>Summary</h2>
-    <p>{{ page.summary }}</p>
-    <p><a href="{{ page.url }}">Read more on Wikipedia</a></p>
+    {% if page.error == "disambiguation" %}
+        <h1>Disambiguation Required</h1>
+        <p>The term you searched for is ambiguous. Please select from the following options:</p>
+        <ul>
+            {% for option in page.options %}
+                <li><a href="/search?search={{ option }}">{{ option }}</a></li>
+            {% endfor %}
+        </ul>
+    {% elif page.error == "page_error" %}
+        <h1>Error</h1>
+        <p>Page not found. Please try another search term.</p>
+    {% else %}
+        <h1>{{ page.title }}</h1>
+        <h2>Summary</h2>
+        <p>{{ page.summary }}</p>
+        <p><a href="{{ page.url }}">Read more on Wikipedia</a></p>
+    {% endif %}
 {% else %}
     <h1>Error</h1>
-    <p>Page not found. Please try another search term.</p>
+    <p>No results found. Please try another search term.</p>
 {% endif %}
 {% endblock %}
