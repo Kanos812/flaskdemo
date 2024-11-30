@@ -26,22 +26,27 @@ def results():
     page = get_page(search_term)
     return render_template("results.html", page=page)
 
+
 def get_page(search_term):
     try:
-        page = wikipedia.page(search_term)
-    except wikipedia.exceptions.PageError:
-        # no such page, return a random one
-        page = wikipedia.page(wikipedia.random())
+        # Search for possible matches
+        search_results = wikipedia.search(search_term)
+        if not search_results:
+            return {"error": "no_results"}  # No results found
+
+        # Attempt to fetch the most relevant page
+        page = wikipedia.page(search_results[0])
     except wikipedia.exceptions.DisambiguationError as e:
-        # this is a disambiguation page, get the first real page (close enough)
-        page_titles = e.options
-        # sometimes the next page has the same name (different caps), so don't try the same again
-        if page_titles[1].lower() == page_titles[0].lower():
-            title = page_titles[2]
-        else:
-            title = page_titles[1]
-        page = get_page(title)
-    return page
+        # Return the list of options for user selection
+        return {"error": "disambiguation", "options": e.options}
+    except wikipedia.exceptions.PageError:
+        # Page does not exist
+        return {"error": "page_error"}
+    except wikipedia.exceptions.WikipediaException as e:
+        # Catch-all for other Wikipedia-related errors
+        return {"error": "unexpected", "message": str(e)}
+
+    return {"title": page.title, "summary": page.summary, "url": page.url}
 
 if __name__ == '__main__':
     app.run()
